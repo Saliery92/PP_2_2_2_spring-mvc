@@ -8,26 +8,17 @@ import web.model.Car;
 import web.service.CarService;
 import web.service.CarServiceImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Controller
 public class CarController {
 
+    private CarService carService = new CarServiceImpl();
 
     @GetMapping("/cars")
     public String getCars(@RequestParam(value = "count", required = false) Integer count, Model model) {
-
-        CarService carService = new CarServiceImpl();
-        List<Car> carList = new ArrayList<>();
-        carList.add(new Car("Producer1", "BestCar1", "Color1"));
-        carList.add(new Car("Producer2", "BestCar2", "Color2"));
-        carList.add(new Car("Producer3", "BestCar3", "Color3"));
-        carList.add(new Car("Producer4", "BestCar4", "Color4"));
-        carList.add(new Car("Producer5", "BestCar5", "Color5"));
-        List<Car> returnedList = count == null ? carList : carService.getCars(carList, count);
-
+        List<Car> returnedList = carService.getCars(count == null ? 0 : count);
         model.addAttribute("cars", returnedList);
         return "cars";
 
